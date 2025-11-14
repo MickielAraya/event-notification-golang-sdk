@@ -1,48 +1,57 @@
 /*
- * Copyright (c) 2022 eBay Inc.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+  - Copyright (c) 2022 eBay Inc.
+    *
+  - Licensed under the Apache License, Version 2.0 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  - http://www.apache.org/licenses/LICENSE-2.0
+    *
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+    *
+
 This package implement two methods required for Event Notification Processing
- ValidateAndProcess - To validate signature and perform necessary action for received notification
- ValidateEndpoint - To Validate url endpoint readiness based on challenge code and response
+
+	ValidateAndProcess - To validate signature and perform necessary action for received notification
+	ValidateEndpoint - To Validate url endpoint readiness based on challenge code and response
 */
 package notification
 
 import (
-	constants "github.com/attila-kun/event-notification-golang-sdk/lib/constants"
-	helper "github.com/attila-kun/event-notification-golang-sdk/lib/helper"
-	pojo "github.com/attila-kun/event-notification-golang-sdk/lib/pojo"
-	processor "github.com/attila-kun/event-notification-golang-sdk/lib/processor"
 	"strings"
+
+	constants "github.com/dracoDevs/event-notification-golang-sdk/lib/constants"
+	helper "github.com/dracoDevs/event-notification-golang-sdk/lib/helper"
+	pojo "github.com/dracoDevs/event-notification-golang-sdk/lib/pojo"
+	processor "github.com/dracoDevs/event-notification-golang-sdk/lib/processor"
 )
 
-//Returns CustomEnv object
-//Input
+// Returns CustomEnv object
+// Input
+//
 //	env - environment details
 //	environment - environment name
-//Returns
+//
+// Returns
+//
 //	customEnvironment - details of specified env
 func getCustomEnv(env *pojo.Environment, environment string) *pojo.CustomEnvironment {
 	return &pojo.CustomEnvironment{env.BaseURL, env.RedirectURI, env.ClientID, env.ClientSecret, env.DevID, environment}
 }
 
-//ValidateAndProcess is to validate request and process the message
-//Input
+// ValidateAndProcess is to validate request and process the message
+// Input
+//
 //	message - message to be processed
 //	signature - signature of sender
 //	config - config details for processing
 //	environment - environment name
-//Returns
+//
+// Returns
+//
 //	error
 //	response body
 func ValidateAndProcess(message *pojo.Message, signature string, config *pojo.Config, environment string) (string, string) {
@@ -73,7 +82,7 @@ func ValidateAndProcess(message *pojo.Message, signature string, config *pojo.Co
 
 	response := helper.ValidateSignature(message, signature, customEnv)
 	if strings.EqualFold(response, constants.Success) {
-		processor.GetProcessor(message.Metadata.Topic).Process(message);
+		processor.GetProcessor(message.Metadata.Topic).Process(message)
 		return "", constants.HTTPStatusCodeNoContent
 	} else if strings.EqualFold(response, constants.Error) {
 		return constants.HTTPStatusCodePreconditionFailed, ""
@@ -81,11 +90,14 @@ func ValidateAndProcess(message *pojo.Message, signature string, config *pojo.Co
 	return constants.HTTPStatusCodeInternalServerError, ""
 }
 
-//ValidateEndpoint is to validate endpoint using challengeCode
-//Input
+// ValidateEndpoint is to validate endpoint using challengeCode
+// Input
+//
 //	challengeCode - challengeCode to be processed
 //	config - config details for processing
-//Returns
+//
+// Returns
+//
 //	error
 //	challenge response
 func ValidateEndpoint(challengeCode string, config *pojo.Config) (string, string) {

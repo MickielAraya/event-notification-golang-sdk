@@ -1,17 +1,18 @@
 /*
- * Copyright (c) 2022 eBay Inc.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+  - Copyright (c) 2022 eBay Inc.
+    *
+  - Licensed under the Apache License, Version 2.0 (the "License");
+  - you may not use this file except in compliance with the License.
+  - You may obtain a copy of the License at
+  - http://www.apache.org/licenses/LICENSE-2.0
+    *
+  - Unless required by applicable law or agreed to in writing, software
+  - distributed under the License is distributed on an "AS IS" BASIS,
+  - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  - See the License for the specific language governing permissions and
+  - limitations under the License.
+    *
+
 This package contains required helper functions
 */
 package helper
@@ -28,16 +29,19 @@ import (
 	"fmt"
 	"strings"
 
-	constants "github.com/attila-kun/event-notification-golang-sdk/lib/constants"
-	pojo "github.com/attila-kun/event-notification-golang-sdk/lib/pojo"
-	service "github.com/attila-kun/event-notification-golang-sdk/lib/service"
+	constants "github.com/dracoDevs/event-notification-golang-sdk/lib/constants"
+	pojo "github.com/dracoDevs/event-notification-golang-sdk/lib/pojo"
+	service "github.com/dracoDevs/event-notification-golang-sdk/lib/service"
 )
 
-//Get XeBay Signature header takes in signature decode using base64 and returns it
-//Returns base64 decoded signature
-//Input
+// Get XeBay Signature header takes in signature decode using base64 and returns it
+// Returns base64 decoded signature
+// Input
+//
 //	signatureHeader - base64 encoded signature
-//Returns
+//
+// Returns
+//
 //	base64 decoded signature
 func getXeBaySignatureHeader(signatureHeader string) *pojo.XeBaySignatureHeader {
 	rawDecodedText, err := base64.StdEncoding.DecodeString(signatureHeader)
@@ -49,10 +53,13 @@ func getXeBaySignatureHeader(signatureHeader string) *pojo.XeBaySignatureHeader 
 	return &signature
 }
 
-//The format key function convert key by adding newline before/after comments
-//Input
+// The format key function convert key by adding newline before/after comments
+// Input
+//
 //	key - unformatted key
-//Returns
+//
+// Returns
+//
 //	key - formatted key
 func formatKey(key string) string {
 
@@ -62,13 +69,16 @@ func formatKey(key string) string {
 	return key
 }
 
-//ValidateSignature is to validate signature used in request
-//Returns string Success/Error
-//Input
+// ValidateSignature is to validate signature used in request
+// Returns string Success/Error
+// Input
+//
 //	message - message details
 //	signatureHeader - base64 encoded signature
 //	config - specific custom environment
-//Returns
+//
+// Returns
+//
 //	string Success/Error
 func ValidateSignature(message *pojo.Message, signatureHeader string, config *pojo.CustomEnvironment) string {
 
@@ -115,11 +125,14 @@ func ValidateSignature(message *pojo.Message, signatureHeader string, config *po
 	return constants.Success
 }
 
-//GenerateChallengeResponse is used to generate challenge response for given challenge code
-//Input
+// GenerateChallengeResponse is used to generate challenge response for given challenge code
+// Input
+//
 //	challengeCode - challengeCode to be processed
 //	config - config details for processing
-//Returns
+//
+// Returns
+//
 //	challenge response
 func GenerateChallengeResponse(challengeCode string, config *pojo.Config) string {
 	hasher := sha256.New()

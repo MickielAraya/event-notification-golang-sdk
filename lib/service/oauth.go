@@ -1,20 +1,20 @@
 /*
- * Copyright (c) 2022 eBay Inc.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- This package include service calls
- */
- package service
+* Copyright (c) 2022 eBay Inc.
+*
+*  Licensed under the Apache License, Version 2.0 (the "License");
+*  you may not use this file except in compliance with the License.
+*  You may obtain a copy of the License at
+*  http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+*
+This package include service calls
+*/
+package service
 
 import (
 	b64 "encoding/base64"
@@ -23,19 +23,23 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
 	lru "github.com/hashicorp/golang-lru"
 
-	constants "github.com/attila-kun/event-notification-golang-sdk/lib/constants"
-	pojo "github.com/attila-kun/event-notification-golang-sdk/lib/pojo"
+	constants "github.com/dracoDevs/event-notification-golang-sdk/lib/constants"
+	pojo "github.com/dracoDevs/event-notification-golang-sdk/lib/pojo"
 )
 
 var m = make(map[string]pojo.Environment)
 var cache, error = lru.New(100)
 
-//Get App Token
-//Input
+// Get App Token
+// Input
+//
 //	request config
-//Returns
+//
+// Returns
+//
 //	app token string
 func getAppToken(req *(pojo.CustomEnvironment)) string {
 
@@ -63,11 +67,14 @@ func getAppToken(req *(pojo.CustomEnvironment)) string {
 	return fmt.Sprint(res[constants.AccessToken])
 }
 
-//GetPublicKey is used to get pblic key for provided config
-//Input
+// GetPublicKey is used to get pblic key for provided config
+// Input
+//
 //	keyId
 //	config details
-//Returns
+//
+// Returns
+//
 //	public key
 func GetPublicKey(keyID string, config *pojo.CustomEnvironment) *pojo.Response {
 
